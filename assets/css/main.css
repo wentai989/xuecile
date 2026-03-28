@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: theme('colors.brutal.bg');
+    color: #111;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer utilities {
+  /* 核心粗野主义样式：粗黑边框，硬阴影 */
+  .border-hard { 
+    border: 3px solid #111; 
+  }
+  .shadow-hard { 
+    box-shadow: 6px 6px 0px #111; 
+  }
+  .shadow-hard-sm { 
+    box-shadow: 4px 4px 0px #111; 
+  }
+  
+  /* 交互状态 */
+  .hover-hard:hover { 
+      box-shadow: 8px 8px 0px #111; 
+      transform: translate(-2px, -2px); 
+  }
+  .active-hard:active { 
+      box-shadow: 0px 0px 0px #111; 
+      transform: translate(6px, 6px); 
+  }
+}
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: theme('colors.brutal.bg'); border-left: 3px solid #111; }
+::-webkit-scrollbar-thumb { background: #111; border: 2px solid theme('colors.brutal.bg'); }
+
+/* 动画 */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+.typing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 1s steps(40, end);
+}
+
+/* 隐藏默认滚动条但保留功能的小工具 */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
