@@ -2,11 +2,12 @@ import { getDb } from '../../utils/mysql'
 import { users } from '../../db/schema'
 import { eq } from 'drizzle-orm'
 
-export default async (event: any) => {
-  const url = event?.node?.req?.url || ''
-  const u = new URL(url, 'http://localhost')
-  const phone = u.searchParams.get('phone') || ''
-  const password = u.searchParams.get('password') || ''
+import { getQuery } from 'h3'
+
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event)
+  const phone = (query.phone as string) || ''
+  const password = (query.password as string) || ''
   try {
     const db = await getDb()
     const user = await db.query.users.findFirst({
@@ -20,4 +21,4 @@ export default async (event: any) => {
   } catch (e: any) {
     return { code: 500, error: e?.message || String(e) }
   }
-}
+})
