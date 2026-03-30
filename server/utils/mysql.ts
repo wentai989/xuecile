@@ -1,6 +1,10 @@
 import mysql from 'mysql2/promise'
 import { drizzle } from 'drizzle-orm/mysql2'
 import * as schema from '../db/schema'
+import * as dotenv from 'dotenv'
+
+// 强制加载 .env 文件（主要为了线上 node .output/server/index.mjs 启动时能读到）
+dotenv.config()
 
 let pool: mysql.Pool | null = null
 let db: any = null
