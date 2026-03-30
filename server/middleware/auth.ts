@@ -37,6 +37,9 @@ export default defineEventHandler((event) => {
       })
     }
     
+    // 打印调试信息，看看到底解密出了什么
+    console.log('Decoded Token User:', user)
+
     // 将解析出的用户信息挂载到 context 上，后续业务 API 可以通过 event.context.user.id 访问
     event.context.user = user
   }

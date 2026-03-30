@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     const user_id = event.context.user?.id
 
     if (!user_id) {
-      return { code: 400, error: '缺少必要参数' }
+      return { code: 400, error: '缺少必要参数1' }
     }
 
     const db = await getDb()

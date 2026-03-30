@@ -18,7 +18,7 @@
         <h1 class="text-6xl font-black uppercase leading-[1.1] mb-8 text-white drop-shadow-[4px_4px_0_#000]">
           Supercharge <br>
           Your <span class="bg-black text-white px-2 shadow-[4px_4px_0_#fff]">Memory</span> <br>
-          With AI.
+          With AI.-v.0.01
         </h1>
         
         <p class="font-bold text-xl border-l-4 border-black pl-4 max-w-lg">

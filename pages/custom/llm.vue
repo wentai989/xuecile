@@ -10,7 +10,7 @@
       <div class="flex items-center gap-2">
         <div class="font-bold text-sm bg-black text-white px-3 py-1 rounded">API: {{ helloData?.data?.message }}</div>
         <div class="font-bold text-sm bg-brutal-green text-black border-2 border-black px-3 py-1 rounded">
-          LOGIN: {{ currentUser ? (currentUser?.username + ' ✓') : '未登录' }}
+          LOGIN: ONLINE ✓
         </div>
       </div>
     </div>
@@ -278,11 +278,7 @@ const formData = reactive({
 })
 
 const { data: helloData } = await useFetch('/api/examples/hello')
-let currentUser = null
-try {
-  const s = localStorage.getItem('user')
-  currentUser = s ? JSON.parse(s) : null
-} catch {}
+
 const scrollToGenerate = () => {
   const el = document.querySelector('#generate-cta')
   el && el.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -434,8 +430,7 @@ const generateCustomWords = async () => {
       word: w.word || `Word${i + 1}`,
       phonetic: w.phonetic || '',
       translation: w.translation || '',
-      tag: 'AI',
-      tagColor: 'bg-brutal-blue',
+  
       rotate: i % 2 === 0 ? 'rotate-6' : '-rotate-6'
     }))
   } catch (e) {
@@ -449,11 +444,6 @@ const generateCustomWords = async () => {
 }
 
 const saveVocabulary = async () => {
-  if (!currentUser || !currentUser.id) {
-    showToast('请先登录后再保存词库', 'error')
-    return
-  }
-
   isSaving.value = true
   try {
     const formattedWords = mockData.words.map(w => ({

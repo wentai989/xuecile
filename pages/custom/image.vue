@@ -237,12 +237,6 @@ const showResult = ref(false)
 const extractedWords = ref([])
 const resultContainer = ref(null)
 
-let currentUser = null
-try {
-  const s = localStorage.getItem('user')
-  currentUser = s ? JSON.parse(s) : null
-} catch {}
-
 const triggerFileInput = () => {
   if (fileInput.value) fileInput.value.click()
 }
@@ -445,11 +439,6 @@ const generateWords = async () => {
 }
 
 const saveVocabulary = async () => {
-  if (!currentUser || !currentUser.id) {
-    showToast('请先登录后再保存词库', 'error')
-    return
-  }
-
   isSaving.value = true
   try {
     const formattedWords = extractedWords.value.map(w => ({

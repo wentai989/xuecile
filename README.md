@@ -6,8 +6,8 @@
 
 ## 🌐 官网与在线体验
 
-你可以直接访问我们的在线体验地址：[https://demo.xuecile.com](https://demo.xuecile.com) 
-只是演示用，数据不保存， 直接下载docker 一键安装就行。
+你可以直接访问我们的在线体验地址：[http://demo.xuecile.com](http://demo.xuecile.com) 
+只是体验，数据不保存， 推荐下载docker 一键安装。
 
 
 ### ✨ 核心功能
@@ -30,6 +30,8 @@
 
 ### 2. 配置 AI 模型 (环境变量)
 复制 `.env.example` 为 `.env`，并填入您的 AI 模型配置。
+
+> **注意**：如果您使用 Docker Compose 一键部署，**不需要在 `.env` 中修改数据库相关的环境变量**（如 `DB_HOST` 等），系统会自动连接到内置的 MySQL 容器。您只需要填写以 `NUXT_DASHSCOPE_` 开头的 AI 模型配置即可。
 
 ```bash
 cp .env.example .env

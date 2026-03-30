@@ -283,14 +283,6 @@ const getLanguageLabel = (code) => {
   return lang ? lang.label : code.toUpperCase()
 }
 
-let currentUser = null
-try {
-  if (typeof window !== 'undefined') {
-    const s = localStorage.getItem('user')
-    currentUser = s ? JSON.parse(s) : null
-  }
-} catch {}
-
 const getColor = (count) => {
   if (count >= 5) return 'bg-brutal-pink'
   if (count >= 3) return 'bg-brutal-orange'
@@ -299,10 +291,9 @@ const getColor = (count) => {
 }
 
 const fetchErrorWords = async () => {
-  if (!currentUser || !currentUser.id) {
-    isLoading.value = false
-    return
-  }
+
+ 
+
   
   isLoading.value = true
   try {
@@ -342,10 +333,7 @@ const playAudio = (word, lang) => {
 }
 
 onMounted(() => {
-  if (!currentUser) {
-    router.push('/login')
-    return
-  }
+
   fetchErrorWords()
 })
 

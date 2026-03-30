@@ -114,17 +114,6 @@ const props = defineProps({
   }
 })
 
-let currentUser = null
-const initUser = () => {
-  if (typeof window !== 'undefined') {
-    try {
-      const s = localStorage.getItem('user')
-      currentUser = s ? JSON.parse(s) : null
-    } catch {}
-  }
-}
-initUser()
-
 const messages = ref([])
 const isAiThinking = ref(false)
 const isLoadingHistory = ref(false)
@@ -132,8 +121,7 @@ const inputText = ref('')
 const chatContainer = ref(null)
 
 const fetchChatHistory = async () => {
-  if (!currentUser) initUser()
-  if (!currentUser || !currentUser.id || !props.currentWord) return
+  if (!props.currentWord) return
   
   isLoadingHistory.value = true
   try {
@@ -187,12 +175,6 @@ const renderMarkdown = (text) => {
 }
 
 const saveAiChatHistory = async (userMessage, aiResponse) => {
-  if (!currentUser) initUser() // 再次尝试获取
-  if (!currentUser || !currentUser.id) {
-    console.error('无法保存AI对话：未找到用户信息')
-    return
-  }
-  
   try {
     const data = await useAuthFetch('/api/ai/save-chat', {
       method: 'POST',

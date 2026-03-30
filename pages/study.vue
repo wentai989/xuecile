@@ -217,14 +217,6 @@ const { showToast } = useToast()
 const { playTypingSound, playSuccessSound, playErrorSound } = useSound()
 const { userSettings, loadSettings } = useSettings()
 
-let currentUser = null
-try {
-  if (typeof window !== 'undefined') {
-    const s = localStorage.getItem('user')
-    currentUser = s ? JSON.parse(s) : null
-  }
-} catch (e) {}
-
 const studyState = reactive({
   vocabularyId: null, // 记录当前词库ID
   wordsData: [],
@@ -464,10 +456,9 @@ const normalizeForComparison = (str) => {
 
 // 辅助函数：记录错词
 const recordErrorWord = async () => {
-  if (!currentUser || !currentUser.id) return
-  
   // 防止在同一题中反复记录
   if (studyState.hasRecordedError) return
+  
   studyState.hasRecordedError = true
 
   try {
@@ -487,8 +478,6 @@ const recordErrorWord = async () => {
 
 // 辅助函数：拼对时，从错词本中移除该词
 const removeErrorWord = async () => {
-  if (!currentUser || !currentUser.id) return
-
   try {
       await useAuthFetch('/api/error-words/remove', {
         method: 'POST',
@@ -637,8 +626,8 @@ const showCorrectAnswer = () => {
 
 // 辅助函数：记录学习进度
 const saveProgress = async () => {
-  if (!currentUser || !currentUser.id || !studyState.vocabularyId) return
-  if (studyState.vocabularyId === 'error_words') return // 错词本复习模式不保存常规进度
+  if (!studyState.vocabularyId) return
+  if (studyState.vocabularyId === 'error_words') return // 错词本复习模式不保存常规进度 
   
   // 当前学到了第几个词 (因为可能是点击下一题、上一题或返回，我们直接保存 currentIndex)
   const learnedCount = studyState.currentIndex

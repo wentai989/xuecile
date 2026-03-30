@@ -255,8 +255,6 @@ import ConfirmModal from '~/components/ConfirmModal.vue'
 const router = useRouter()
 const { showToast } = useToast()
 
-let currentUser = null
-
 // 过滤器状态
 const currentFilter = ref('全部')
 const filters = ['全部', '学习中', '待学习', '已完成']
@@ -302,8 +300,6 @@ const confirmModal = reactive({
 
 // 点击重置按钮，打开弹窗
 const resetProgress = (book) => {
-  if (!currentUser || !currentUser.id) return
-  
   confirmModal.targetBook = book
   confirmModal.message = `确定要重置《${book.title}》的学习进度吗？将从头开始学习。`
   confirmModal.isOpen = true
@@ -312,7 +308,7 @@ const resetProgress = (book) => {
 // 执行重置进度操作
 const executeReset = async () => {
   const book = confirmModal.targetBook
-  if (!book || !currentUser || !currentUser.id) return
+  if (!book) return
 
   try {
     const result = await useAuthFetch('/api/vocabulary/progress', {
@@ -347,8 +343,6 @@ const deleteConfirmModal = reactive({
 
 // 点击删除按钮，打开弹窗
 const openDeleteConfirm = (book) => {
-  if (!currentUser || !currentUser.id) return
-  
   deleteConfirmModal.targetBook = book
   deleteConfirmModal.message = `确定要永久删除《${book.title || '当前词库'}》吗？此操作无法恢复。`
   deleteConfirmModal.isOpen = true
@@ -357,7 +351,7 @@ const openDeleteConfirm = (book) => {
 // 执行删除词库操作
 const executeDelete = async () => {
   const book = deleteConfirmModal.targetBook
-  if (!book || !currentUser || !currentUser.id) return
+  if (!book) return
 
   try {
     // 假设删除接口为 /api/vocabulary/delete，如有不同请自行修改
@@ -400,16 +394,6 @@ const filteredBooks = computed(() => {
 })
 
 onMounted(async () => {
-  try {
-    const s = localStorage.getItem('user')
-    currentUser = s ? JSON.parse(s) : null
-  } catch {}
-
-  if (!currentUser || !currentUser.id) {
-    isLoading.value = false
-    return
-  }
-
   try {
     const result = await useAuthFetch('/api/vocabulary/list')
     if (result?.code === 200) {
