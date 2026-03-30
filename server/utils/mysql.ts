@@ -8,19 +8,17 @@ let initialized = false
 
 const getPool = async () => {
   if (pool) return pool
-  const url = process.env.NUXT_MYSQL_URL || process.env.MYSQL_URL
-  if (url) {
-    pool = mysql.createPool(url)
-  } else {
-    pool = mysql.createPool({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      port: Number(process.env.DB_PORT || 3306),
-      connectionLimit: 5
-    })
-  }
+  
+  // 只使用离散配置进行连接，不再使用拼接的 URL
+  pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: Number(process.env.DB_PORT || 3306),
+    connectionLimit: 5
+  })
+  
   return pool
 }
 
