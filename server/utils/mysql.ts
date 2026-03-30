@@ -16,7 +16,13 @@ const getPool = async () => {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     port: Number(process.env.DB_PORT || 3306),
-    connectionLimit: 5
+    connectionLimit: 10,
+    waitForConnections: true,
+    queueLimit: 0,
+    // 增加以下配置防止线上环境参数解析/时区报错
+    dateStrings: true,
+    timezone: '+08:00',
+    charset: 'utf8mb4'
   })
   
   return pool
