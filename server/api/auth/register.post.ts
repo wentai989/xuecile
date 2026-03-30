@@ -2,24 +2,12 @@ import { getDb } from '../../utils/mysql'
 import { users } from '../../db/schema'
 import { eq } from 'drizzle-orm'
 import { signToken } from '../../utils/auth'
+import { readBody } from 'h3'
 
-export default async (event: any) => {
-  const req = event?.node?.req
-  const body = await new Promise<any>((resolve) => {
-    if (!req) return resolve({})
-    let data = ''
-    req.on('data', (chunk: any) => {
-      data += chunk
-    })
-    req.on('end', () => {
-      try {
-        resolve(JSON.parse(data || '{}'))
-      } catch {
-        resolve({})
-      }
-    })
-  })
-  const { phone = '', password = '', name = '' } = body || {}
+export default defineEventHandler(async (event) => {
+  const body = await readBody(event) || {}
+  
+  const { phone = '', password = '', name = '' } = body
   if (!phone || !password) {
     return { code: 500, error: '参数不合法' }
   }
@@ -50,4 +38,4 @@ export default async (event: any) => {
   } catch (e: any) {
     return { code: 500, error: e?.message || String(e) }
   }
-}
+})
